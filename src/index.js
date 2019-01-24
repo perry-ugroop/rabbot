@@ -427,9 +427,9 @@ Broker.prototype.publish = function (exchangeName, type, message, routingKey, co
     const connection = this.connections[ connectionName ].options;
     const replyQueue = this.connections[ connectionName ].replyQueue;
 
-    const fromAddress = `rabbitmq://${connection.host}/${replyQueue.consumerTag}`;
-    const toAddress = `rabbitmq://${connection.host}/${exchangeName}`;
-    let responseAddress = `rabbitmq://${connection.host}/${replyQueue.consumerTag}`;
+    const fromAddress = `rabbitmq://${connection.host}:${connection.port}/${replyQueue.consumerTag}`;
+    const toAddress = `rabbitmq://${connection.host}:${connection.port}/${exchangeName}`;
+    let responseAddress = `rabbitmq://${connection.host}:${connection.port}/${replyQueue.consumerTag}`;
 
     if (options.autoDelete) {
       responseAddress = `${responseAddress}?autodelete=true&durable=false`
@@ -437,7 +437,7 @@ Broker.prototype.publish = function (exchangeName, type, message, routingKey, co
 
     let faultAddress = null;
     if (options.faultAddress) {
-      faultAddress =`rabbitmq://${connection.host}/${options.faultAddress}`;
+      faultAddress =`rabbitmq://${connection.host}:${connection.port}/${options.faultAddress}`;
     }
 
     options.body = messageEnvelop({
