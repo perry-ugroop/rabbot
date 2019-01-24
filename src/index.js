@@ -427,6 +427,8 @@ Broker.prototype.publish = function (exchangeName, type, message, routingKey, co
     const connection = this.connections[ connectionName ].options;
     const replyQueue = this.connections[ connectionName ].replyQueue;
 
+    console.log('rabbot: connection: ', JSON.stringify(connection));
+
     const fromAddress = `rabbitmq://${connection.host}:${connection.port}/${replyQueue.consumerTag}`;
     const toAddress = `rabbitmq://${connection.host}:${connection.port}/${exchangeName}`;
     let responseAddress = `rabbitmq://${connection.host}:${connection.port}/${replyQueue.consumerTag}`;
